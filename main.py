@@ -14,7 +14,13 @@ import uvicorn
 # Database setup
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:#Addidas123@db.lkxsnmolnhduuiuaaswb.supabase.co:5432/postgres")
 
-engine = create_engine(DATABASE_URL)
+# Ensure SSL connection for Supabase
+if "?" in DATABASE_URL:
+    SQLALCHEMY_DATABASE_URL = DATABASE_URL + "&sslmode=require"
+else:
+    SQLALCHEMY_DATABASE_URL = DATABASE_URL + "?sslmode=require"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Create tables
