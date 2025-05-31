@@ -18,8 +18,12 @@ import os
 # Get URL from Render environment only
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+# Convert postgres:// to postgresql:// for SQLAlchemy compatibility
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Force SSL for Supabase
-if "?sslmode=" not in DATABASE_URL:
+if DATABASE_URL and "?sslmode=" not in DATABASE_URL:
     DATABASE_URL += "?sslmode=require"
 
 # Configure engine with SSL and connection pooling
