@@ -15,17 +15,16 @@ import uvicorn
 from sqlalchemy import create_engine
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgres://postgres:WhisperWork2025@db.lkxsnmolnhduuiuaaswb.supabase.co:6543/postgres")
+# Get URL from Render environment only
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Ensure SSL connection for Supabase
-if "?" in DATABASE_URL:
-    SQLALCHEMY_DATABASE_URL = DATABASE_URL + "&sslmode=require"
-else:
-    SQLALCHEMY_DATABASE_URL = DATABASE_URL + "?sslmode=require"
+# Force SSL for Supabase
+if "?sslmode=" not in DATABASE_URL:
+    DATABASE_URL += "?sslmode=require"
 
 # Configure engine with SSL and connection pooling
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
+    DATABASE_URL,
     pool_pre_ping=True,
     pool_recycle=300,
     pool_timeout=20,
