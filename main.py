@@ -12,7 +12,10 @@ from schemas import ClientCreate, ClientUpdate, ClientResponse, ClientLogRespons
 import uvicorn
 
 # Database setup
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:#Addidas123@db.lkxsnmolnhduuiuaaswb.supabase.co:5432/postgres")
+from sqlalchemy import create_engine
+import os
+
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:WhisperWork2025@db.lkxsnmolnhduuiuaaswb.supabase.co:6543/postgres")
 
 # Ensure SSL connection for Supabase
 if "?" in DATABASE_URL:
@@ -20,7 +23,14 @@ if "?" in DATABASE_URL:
 else:
     SQLALCHEMY_DATABASE_URL = DATABASE_URL + "?sslmode=require"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# Configure engine with SSL and connection pooling
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    pool_pre_ping=True,
+    pool_recycle=300,
+    pool_timeout=20,
+    max_overflow=0
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Create tables
