@@ -15,7 +15,7 @@ import uvicorn
 from sqlalchemy import create_engine
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:WhisperWork2025@db.lkxsnmolnhduuiuaaswb.supabase.co:6543/postgres")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgres://postgres:WhisperWork2025@db.lkxsnmolnhduuiuaaswb.supabase.co:6543/postgres")
 
 # Ensure SSL connection for Supabase
 if "?" in DATABASE_URL:
